@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="myform">
+        <input type="text" id="name"/><br><br>
+        <input type="text" id="pswd"/><br><br>
+        <input type="submit">
+    </form>
+    <script>
+        let getForm = document.getElementById("myform");
+        getForm.addEventListener("submit", (event) => {
+            event.preventDefault(event);
+            let existingUsers = localStorage.getItem("userDetails");
+            let users = existingUsers ? JSON.parse(existingUsers) : [];
+            let ip1 = document.getElementById("name").value;
+            let ip2 = document.getElementById("pswd").value;
+            let userExists = false;
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].ip1 === ip1 && users[i].ip2 === ip2) {
+                    userExists = true;
+                    break;
+                }
+            }
+            if (userExists) {
+                alert("User with the same ip1 and ip2 already exists!");
+            } else {
+                
+                users.push({ ip1: ip1, ip2: ip2 });
+                localStorage.setItem("userDetails", JSON.stringify(users));
+            }
+
+            event.target[0].value="";
+            event.target[1].value="";
+        });
+    </script>
+</body>
+</html>
